@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Innoways-Ltd/name-card/static/css/main.c20479af.css",
-    "main.js": "/Innoways-Ltd/name-card/static/js/main.6c54b9c2.js",
-    "static/js/453.d0c65a9d.chunk.js": "/Innoways-Ltd/name-card/static/js/453.d0c65a9d.chunk.js",
-    "index.html": "/Innoways-Ltd/name-card/index.html",
-    "main.c20479af.css.map": "/Innoways-Ltd/name-card/static/css/main.c20479af.css.map",
-    "main.6c54b9c2.js.map": "/Innoways-Ltd/name-card/static/js/main.6c54b9c2.js.map",
-    "453.d0c65a9d.chunk.js.map": "/Innoways-Ltd/name-card/static/js/453.d0c65a9d.chunk.js.map"
+    "main.css": "/name-card/static/css/main.c20479af.css",
+    "main.js": "/name-card/static/js/main.8b7f6821.js",
+    "static/js/453.d0c65a9d.chunk.js": "/name-card/static/js/453.d0c65a9d.chunk.js",
+    "index.html": "/name-card/index.html",
+    "main.c20479af.css.map": "/name-card/static/css/main.c20479af.css.map",
+    "main.8b7f6821.js.map": "/name-card/static/js/main.8b7f6821.js.map",
+    "453.d0c65a9d.chunk.js.map": "/name-card/static/js/453.d0c65a9d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c20479af.css",
-    "static/js/main.6c54b9c2.js"
+    "static/js/main.8b7f6821.js"
   ]
 }
