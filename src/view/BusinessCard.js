@@ -68,12 +68,10 @@ END:VCARD`;
           <img src={walletIcon} alt="Wallet" className="button-icon" />
           <span className="button-text">Wallet</span>
         </button>
-        <div className="button-divider"></div>
         <button className="icon-button" onClick={handleWhatsAppClick}>
           <img src={WhatsappIcon} alt="Whatsapp" className="button-icon" />
           <span className="button-text">Whatsapp</span>
         </button>
-        <div className="button-divider"></div>
         <button className="icon-button" onClick={handleAddToPhoneBook}>
           <img src={userAddIcon} alt="Phone Book" className="button-icon" />
           <span className="button-text">Phone Book</span>
