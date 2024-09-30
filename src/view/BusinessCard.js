@@ -39,14 +39,29 @@ URL;TYPE=YouTube:https://www.youtube.com/vincent
 URL;TYPE=LinkedIn:https://www.linkedin.com/in/vincent
 END:VCARD`;
 
-    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'vincent_lam.vcf');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // 检查设备类型
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isAndroid = /android/.test(userAgent);
+    const isIOS = /iphone|ipad|ipod/.test(userAgent);
+
+    if (isAndroid) {
+      // Android设备：使用intent打开联系人应用
+      const encodedVCard = encodeURIComponent(vcard);
+      window.location.href = `intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.vcard=${encodedVCard};end`;
+    } else if (isIOS) {
+      // iOS设备：打开联系人应用（需要用户手动添加）
+      window.location.href = 'contacts://';
+    } else {
+      // 其他设备：下载vCard文件
+      const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'vincent_lam.vcf');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
