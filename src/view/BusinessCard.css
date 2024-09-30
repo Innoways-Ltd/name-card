@@ -39,7 +39,8 @@
   
   .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     margin-top: 20px;
     background-color: #ffffff;
@@ -134,18 +135,20 @@
     text-decoration: none;
   }
   .icon-button {
-    flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 10px;
-    border: none;
-    background: none;
-    cursor: pointer;
+    justify-content: center;
+    /* Add any other existing styles for the button */
   }
   
   .divider {
     height: 1px;
     background-color: #e0e0e0;
     width: 100%;
+  }
+  .button-divider {
+    height: 24px;
+    width: 2px;
+    background-color: #011325;
+
   }
