@@ -1,5 +1,6 @@
 {
   "name": "business-card",
+  "homepage": "https://github.com/Innoways-Ltd/name-card",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
