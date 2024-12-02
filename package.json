@@ -1,6 +1,6 @@
 {
   "name": "business-card",
-  "homepage": "https://innoways-ltd.github.io/name-card",
+  "homepage": "http://fe-namecard.s3-website-eu-west-1.amazonaws.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
