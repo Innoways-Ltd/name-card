@@ -4,3 +4,9 @@ export const getUserData = async (companycode = '', username = '') => {
   const data = await response.json();
   return data;
 }
+
+export const getThemeData = async (companycode = '') => {
+  const response = await fetch(`${base_url}/theme/getlist?companycode=${companycode}`);
+  const data = await response.json();
+  return data;
+}
