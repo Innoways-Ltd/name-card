@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from "react-helmet"
 import './BusinessCard.css'; // Import the CSS file
 import walletIcon from "../view/wallet.png";
 import WhatsappIcon from "../view/whatsapp.png";
 import userAddIcon from "../view/user-add.png";
-import avatarIcon from "../view/avatar.png";
-import { getUserData } from '../apiHandlers/user.apiHandler';
+import avatarIcon from "../view/user.webp";
+import { getUserData, getThemeData } from '../apiHandlers/user.apiHandler';
 
 
 const BusinessCard = () => {
   // Extract username from URL parameters
   const { companycode, username } = useParams();
   const [userData, setUserData] = useState({})
+  const [themeData, setThemeData] = useState({})
 
   const detectDevice = () => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -93,6 +95,7 @@ const BusinessCard = () => {
       document.body.removeChild(link);
     }
   };
+
   useEffect(() => {
     const getUserDataCall = async () => {
       const res = await getUserData(companycode, username);
@@ -100,113 +103,197 @@ const BusinessCard = () => {
         setUserData(res.Data)
       }
     }
+    const themeDataCall = async () => {
+      const res = await getThemeData(companycode);
+      if (res.Code === 0) {
+        setThemeData(res.Data)
+      }
+    }
     getUserDataCall();
-  }, [])
+    themeDataCall();
+  }, [companycode, username])
+
+  const { smartWidget } = userData
+
+  const showingContent = () => {
+    return ["phone", "email", "youtube", "facebook", "instagram"].filter((x) => {
+      return smartWidget?.[x] === true
+    })
+  }
+
+  const renderDynamicContents = (type, i) => {
+    switch (type) {
+      case "phone":
+        return (
+          <>
+            <div className="info-item">
+              <span role="img" aria-label="phone">📞</span>
+              <div className="info-text">
+                <p className="info-label">Mobile</p>
+                <p className="info-value">
+                  <a href={`tel:${userData?.tel?.replace(/\s+/g, '')}`}>{userData?.tel}</a>
+                </p>
+                <p className="info-value">
+                  <a href={`tel:${userData?.mobile?.replace(/\s+/g, '')}`}>{userData?.mobile}</a>
+                </p>
+              </div>
+            </div>
+            {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
+          </>
+        )
+      case "email":
+        return (
+          <>
+            <div className="info-item">
+              <span role="img" aria-label="email">✉️</span>
+              <div className="info-text">
+                <p className="info-label">Email</p>
+                <p className="info-value">
+                  <a
+                    href={`mailto:${userData?.email}`}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      window.location.href = `mailto:${userData?.email}`
+                    }}
+                  >
+                    {userData?.email}
+                  </a>
+                </p>
+              </div>
+            </div>
+            {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
+          </>
+        )
+      case "youtube":
+        return (
+          <>
+            <div className="info-item">
+              <span role="img" aria-label="youtube">▶️</span>
+              <div className="info-text">
+                <p className="info-label">YouTube</p>
+                <p className="info-value1">
+                  <a
+                    href={userData?.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      window.open(userData?.youtube, "_blank")
+                    }}
+                  >
+                    {userData?.youtube}
+                  </a>
+                </p>
+              </div>
+            </div>
+            {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
+          </>
+        )
+      case "facebook":
+        return (
+          <>
+            <div className="info-item">
+              <span role="img" aria-label="facebook">🔗</span>
+              <div className="info-text">
+                <p className="info-label">Facebook</p>
+                <p className="info-value1">
+                  <a
+                    href={userData?.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      window.open(userData?.facebook, "_blank")
+                    }}
+                  >
+                    {userData?.facebook}
+                  </a>
+                </p>
+              </div>
+            </div>
+            {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
+          </>
+        )
+      case "instagram":
+        return (
+          <>
+            <div className="info-item">
+              <span role="img" aria-label="instagram">📷</span>
+              <div className="info-text">
+                <p className="info-label">Instagram</p>
+                <p className="info-value1">
+                  <a
+                    href={userData?.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      window.open(userData?.instagram, "_blank")
+                    }}
+                  >
+                    {userData?.instagram}
+                  </a>
+                </p>
+              </div>
+            </div>
+            {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
+          </>
+        )
+
+      default:
+        break
+    }
+  }
 
   return (
-    <div className="business-card">
-      <div className="header">
-        <img
-          src={(userData && userData?.profile_picture_thumb && userData?.profile_picture_thumb !== "null" && userData?.profile_picture_thumb) ? userData.profile_picture_thumb : userData?.profile_picture && userData.profile_picture !== "null" ? userData?.profile_picture : false}
-          alt="Profile"
-          className="profile-image"
-        />
-        <h2>{userData?.display_name}</h2>
-        <p>{userData?.job}</p>
-        <p className="description">
-          {/* Founder of the SiiA Group, which consists of SynTech, Innoways, i-RMS and A4apple, all companies which are focused on innovation and technology. */}
-        </p>
+    <React.Fragment>
+      <Helmet>
+        <link rel="shortcut icon" href={themeData && themeData[0]?.company_icon} />
+        <link rel="icon" href={themeData && themeData[0]?.company_icon} />
+        <title>{userData?.display_name ? `${userData?.display_name} | Business Card` : "User not found"}</title>
+      </Helmet>
+      <div className="business-card">
+        <div className="header">
+          <img
+            src={(userData && userData?.profile_picture_thumb && userData?.profile_picture_thumb !== "null" && userData?.profile_picture_thumb) ? userData.profile_picture_thumb : userData?.profile_picture && userData.profile_picture !== "null" ? userData?.profile_picture : avatarIcon}
+            alt="Profile"
+            className="profile-image"
+          />
+          <h2>{userData?.display_name || "User not found"}</h2>
+          <p>{userData?.job}</p>
+          <p className="description">
+            {/* Founder of the SiiA Group, which consists of SynTech, Innoways, i-RMS and A4apple, all companies which are focused on innovation and technology. */}
+          </p>
 
-        <div className="buttons">
-          <button className="icon-button" onClick={handleWalletClick}>
-            <img src={walletIcon} alt="Wallet" className="button-icon" />
-            <span className="button-text">Wallet</span>
-          </button>
-          <button className="icon-button" onClick={handleWhatsAppClick}>
-            <img src={WhatsappIcon} alt="Whatsapp" className="button-icon" />
-            <span className="button-text">Whatsapp</span>
-          </button>
-          <button className="icon-button" onClick={handleAddToPhoneBook}>
-            <img src={userAddIcon} alt="Phone Book" className="button-icon" />
-            <span className="button-text">Phone Book</span>
-          </button>
+          {userData?.smartWidget && (
+            <div className="buttons">
+              <button className="icon-button" onClick={handleWalletClick}>
+                <img src={walletIcon} alt="Wallet" className="button-icon" />
+                <span className="button-text">Wallet</span>
+              </button>
+              {smartWidget?.whatsapp && (
+                <button className="icon-button" onClick={handleWhatsAppClick}>
+                  <img src={WhatsappIcon} alt="Whatsapp" className="button-icon" />
+                  <span className="button-text">Whatsapp</span>
+                </button>
+              )}
+              {smartWidget?.phonebook && (
+                <button className="icon-button" onClick={handleAddToPhoneBook}>
+                  <img src={userAddIcon} alt="Phone Book" className="button-icon" />
+                  <span className="button-text">Phone Book</span>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="contact-info">
+          {showingContent()?.map((x, i) => {
+            return renderDynamicContents(x, i)
+          })}
         </div>
       </div>
-
-
-      <div className="contact-info">
-        <div className="info-item">
-          <span role="img" aria-label="phone">📞</span>
-          <div className="info-text">
-            <p className="info-label">Mobile</p>
-            <p className="info-value">
-              <a href="tel:+85290968612">{userData.mobile}</a>
-            </p>
-            <p className="info-value">
-              <a href="tel:+61421303106">{userData.mobile}</a>
-            </p>
-          </div>
-        </div>
-        <div className="divider"></div>
-        <div className="info-item">
-          <span role="img" aria-label="email">✉️</span>
-          <div className="info-text">
-            <p className="info-label">Email</p>
-            <p className="info-value">
-              <a
-                href={`mailto:${userData.email}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = `mailto:${userData.email}`;
-                }}
-              >
-                {userData.email}
-              </a>
-            </p>
-          </div>
-        </div>
-        <div className="divider"></div>
-        <div className="info-item">
-          <span role="img" aria-label="youtube">▶️</span>
-          <div className="info-text">
-            <p className="info-label">YouTube</p>
-            <p className="info-value1">
-              <a
-                href={userData.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.open(userData.youtube || '', "_blank");
-                }}
-              >
-                {userData.youtube}
-              </a>
-            </p>
-          </div>
-        </div>
-        <div className="divider"></div>
-        <div className="info-item">
-          <span role="img" aria-label="linkedin">🔗</span>
-          <div className="info-text">
-            <p className="info-label">Linkedin</p>
-            <p className="info-value1">
-              <a
-                href="https://hk.linkedin.com/in/vincent-lam-92935719"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.open("https://hk.linkedin.com/in/vincent-lam-92935719", "_blank");
-                }}
-              >
-                https://hk.linkedin.com/in/vincent-lam-92935719
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    </React.Fragment>
   );
 };
 
