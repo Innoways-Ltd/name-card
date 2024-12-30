@@ -8,7 +8,6 @@ import userAddIcon from "../view/user-add.png";
 import avatarIcon from "../view/user.webp";
 import { getUserData, getThemeData } from '../apiHandlers/user.apiHandler';
 
-
 const BusinessCard = () => {
   // Extract username from URL parameters
   const { companycode, username } = useParams();
@@ -38,13 +37,20 @@ const BusinessCard = () => {
 
     if (deviceType === 'Android') {
       // Add to Android wallet
-      window.location.href = 'intent://add_to_wallet#Intent;scheme=your_android_scheme;package=com.google.android.apps.walletnfcrel;end';
-    } else if (deviceType === 'iOS') {
-      // Add to iOS wallet
-      const pkpassUrl = 'https://dms-api-dev.a4apple.cn:51127/files/DownloadPublicLinkFile?P=iGCGWUHKNuX0uB57hX6YtQlUkZJFXJIKQsh2OLPb%2BtjE1HEbI4/Y4ffsUT1%2BLCE%2B';
+      // window.location.href = //'intent://add_to_wallet#Intent;scheme=your_android_scheme;package=com.google.android.apps.walletnfcrel;end';
+
+      const pkpassUrl = `${process.env.REACT_APP_GIMA_API_URL}/wallet/getwalletpass?username=${atob(username)}&companycode=${companycode}&environment=${process.env.REACT_APP_ENV}&device=android`;
       const link = document.createElement('a');
       link.href = pkpassUrl;
-      link.download = 'vincent_ios.pkpass';
+      link.download = `${atob(username)}.pkpass`;
+      link.click();
+
+    } else if (deviceType === 'iOS') {
+      // Add to iOS wallet
+      const pkpassUrl = `${process.env.REACT_APP_GIMA_API_URL}/wallet/getwalletpass?username=${atob(username)}&companycode=${companycode}&environment=${process.env.REACT_APP_ENV}&device=ios`;
+      const link = document.createElement('a');
+      link.href = pkpassUrl;
+      link.download = `${atob(username)}.pkpass`;
       link.click();
     } else {
       alert('Wallet feature is only available on Android and iOS devices.');
@@ -64,7 +70,6 @@ const BusinessCard = () => {
     TEL;TYPE=CELL:${userData.mobile}
     EMAIL:${userData.email}
     URL;TYPE=YouTube:${userData.youtube}
-    URL;TYPE=LinkedIn:https://www.linkedin.com/in/vincent
     END:VCARD`;
 
     const deviceType = detectDevice();
@@ -79,7 +84,7 @@ const BusinessCard = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${(userData.display_name || '').replace(/[^\w.-]/g, '_')}.vcf`);
+      link.setAttribute('download', `${atob(username)}.vcf`)
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -89,7 +94,7 @@ const BusinessCard = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${(userData.display_name || '').replace(/[^\w.-]/g, '_')}.vcf`);
+      link.setAttribute('download', `${atob(username)}.vcf`)
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
