@@ -16,42 +16,25 @@ const BusinessCard = () => {
 
   const detectDevice = () => {
     const userAgent = navigator.userAgent.toLowerCase();
-
-    console.log(userAgent)
-
-    // iOS detection
-    if (/ipad|iphone|ipod|safari/.test(userAgent)) {
-      return 'iOS';
-    }
-
     // Android detection
     if (/android/i.test(userAgent)) {
       return 'Android';
     }
-
+    // iOS detection
+    if (/ipad|iphone|ipod|safari/.test(userAgent)) {
+      return 'iOS';
+    }
     return 'unknown';
   };
 
   const handleWalletClick = () => {
     const deviceType = detectDevice();
-
     if (deviceType === 'Android') {
       // Add to Android wallet
-      // window.location.href = //'intent://add_to_wallet#Intent;scheme=your_android_scheme;package=com.google.android.apps.walletnfcrel;end';
-
-      const pkpassUrl = `${process.env.REACT_APP_GIMA_API_URL}/wallet/getwalletpass?username=${atob(username)}&companycode=${companycode}&environment=${process.env.REACT_APP_ENV}&device=android`;
-      const link = document.createElement('a');
-      link.href = pkpassUrl;
-      link.download = `${atob(username)}.pkpass`;
-      link.click();
-
+      window.location.href = `${process.env.REACT_APP_GIMA_API_URL}/wallet/getwalletpass?username=${atob(username)}&companycode=${companycode}&environment=${process.env.REACT_APP_ENV}&device=android`;
     } else if (deviceType === 'iOS') {
       // Add to iOS wallet
-      const pkpassUrl = `${process.env.REACT_APP_GIMA_API_URL}/wallet/getwalletpass?username=${atob(username)}&companycode=${companycode}&environment=${process.env.REACT_APP_ENV}&device=ios`;
-      const link = document.createElement('a');
-      link.href = pkpassUrl;
-      link.download = `${atob(username)}.pkpass`;
-      link.click();
+      window.location.href = `${process.env.REACT_APP_GIMA_API_URL}/wallet/getwalletpass?username=${atob(username)}&companycode=${companycode}&environment=${process.env.REACT_APP_ENV}&device=ios&downloadable=no`;
     } else {
       alert('Wallet feature is only available on Android and iOS devices.');
     }
