@@ -59,7 +59,7 @@ const BusinessCard = () => {
 
   const handleWhatsAppClick = () => {
     // Replace with the actual phone number
-    window.open(`https://wa.me/${userData.mobile}`, '_blank');
+    window.open(`https://wa.me/${userData.mobile?.replace(/\s+/g, '')?.replace("+", "")}`, '_blank');
   };
 
   const handleAddToPhoneBook = () => {
