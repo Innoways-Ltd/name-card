@@ -47,41 +47,22 @@ const BusinessCard = () => {
 
   const handleAddToPhoneBook = () => {
     const vcard = `BEGIN:VCARD
-    VERSION:3.0
-    FN:${userData.display_name}
-    TITLE:${userData.job}
-    TEL;TYPE=CELL:${userData.mobile}
-    EMAIL:${userData.email}
-    URL;TYPE=YouTube:${userData.youtube}
-    END:VCARD`;
-
-    const deviceType = detectDevice();
-
-    if (deviceType === 'Android') {
-      // Android device: use intent to open contacts app
-      const encodedVCard = encodeURIComponent(vcard);
-      window.location.href = `intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.vcard=${encodedVCard};end`;
-    } else if (deviceType === 'iOS') {
-      // iOS device: create and download vCard file
-      const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${atob(username)}.vcf`)
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      // Other devices: download vCard file
-      const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${atob(username)}.vcf`)
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+VERSION:3.0
+FN:${userData.display_name}
+TITLE:${userData.job}
+TEL;TYPE=CELL:${userData.mobile}
+EMAIL:${userData.email}
+URL:${userData.youtube}
+END:VCARD`;
+    // download vCard file
+    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${atob(username)}.vcf`)
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   useEffect(() => {
