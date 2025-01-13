@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from "react-helmet"
 import './BusinessCard.css'; // Import the CSS file
-import walletIcon from "../view/wallet.png";
-import WhatsappIcon from "../view/whatsapp.png";
-import userAddIcon from "../view/user-add.png";
-import avatarIcon from "../view/user.webp";
-import { getUserData, getThemeData } from '../apiHandlers/user.apiHandler';
+import walletIcon from "../images/wallet.png";
+import WhatsappIcon from "../images/whatsapp.png";
+import userAddIcon from "../images/user-add.png";
+import avatarIcon from "../images/user.webp";
+import mobileIcon from "../images/Mobile-icon.png";
+import emailIcon from "../images/email-icon02.png"
+import facebookIcon from "../images/facebook.png"
+import instagramIcon from "../images/instagram.png"
+import youtubeIcon from "../images/youtube.png"
+import { getUserData, getThemeData } from "../apiHandlers/user.apiHandler";
 
 const BusinessCard = () => {
   // Extract username from URL parameters
@@ -96,7 +101,13 @@ END:VCARD`;
         return (
           <>
             <div className="info-item">
-              <span role="img" aria-label="phone">📞</span>
+              <span role="img" aria-label="phone">
+                <img
+                  src={mobileIcon} alt="mobile"
+                  height={"33px"}
+                  width={"20px"}
+                />
+              </span>
               <div className="info-text">
                 <p className="info-label">Mobile</p>
                 <p className="info-value">
@@ -114,7 +125,13 @@ END:VCARD`;
         return (
           <>
             <div className="info-item">
-              <span role="img" aria-label="email">✉️</span>
+              <span role="img" aria-label="email">
+                <img
+                  src={emailIcon} alt="email"
+                  height={"22px"}
+                  width={"27px"}
+                />
+              </span>
               <div className="info-text">
                 <p className="info-label">Email</p>
                 <p className="info-value">
@@ -137,7 +154,14 @@ END:VCARD`;
         return (
           <>
             <div className="info-item">
-              <span role="img" aria-label="youtube">▶️</span>
+              <span role="img" aria-label="youtube">
+                <img
+                  src={youtubeIcon}
+                  alt="youtube"
+                  height={"30px"}
+                  width={"32px"}
+                />
+              </span>
               <div className="info-text">
                 <p className="info-label">YouTube</p>
                 <p className="info-value1">
@@ -162,7 +186,14 @@ END:VCARD`;
         return (
           <>
             <div className="info-item">
-              <span role="img" aria-label="facebook">🔗</span>
+              <span role="img" aria-label="facebook">
+                <img
+                  src={facebookIcon}
+                  alt="facebook"
+                  height={"32px"}
+                  width={"30px"}
+                />
+              </span>
               <div className="info-text">
                 <p className="info-label">Facebook</p>
                 <p className="info-value1">
@@ -187,7 +218,14 @@ END:VCARD`;
         return (
           <>
             <div className="info-item">
-              <span role="img" aria-label="instagram">📷</span>
+              <span role="img" aria-label="instagram">
+                <img
+                  src={instagramIcon}
+                  alt="instagram"
+                  height={"32px"}
+                  width={"32px"}
+                />
+              </span>
               <div className="info-text">
                 <p className="info-label">Instagram</p>
                 <p className="info-value1">
