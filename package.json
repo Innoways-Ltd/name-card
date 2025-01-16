@@ -21,10 +21,12 @@
   "scripts": {
     "start": "env-cmd -f .env.dev react-scripts start",
     "start:dev": "env-cmd -f .env.dev react-scripts start",
+    "start:staging": "env-cmd -f .env.staging react-scripts start",
     "start:uat": "env-cmd -f .env.uat react-scripts start",
     "start:prd": "env-cmd -f .env.prd react-scripts start",
     "build": "env-cmd -f .env.dev react-scripts build",
     "build:dev": "env-cmd -f .env.dev react-scripts build",
+    "build:staging": "env-cmd -f .env.staging react-scripts build",
     "build:uat": "env-cmd -f .env.uat react-scripts build",
     "build:prd": "env-cmd -f .env.prd react-scripts build",
     "test": "react-scripts test",
