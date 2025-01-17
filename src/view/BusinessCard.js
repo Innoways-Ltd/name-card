@@ -111,6 +111,9 @@ END:VCARD`;
               <div className="info-text">
                 <p className="info-label">Mobile</p>
                 <p className="info-value">
+                  <a href={`tel:${userData?.home_tel?.replace(/\s+/g, '')}`}>{userData?.home_tel}</a>
+                </p>
+                <p className="info-value">
                   <a href={`tel:${userData?.tel?.replace(/\s+/g, '')}`}>{userData?.tel}</a>
                 </p>
                 <p className="info-value">
