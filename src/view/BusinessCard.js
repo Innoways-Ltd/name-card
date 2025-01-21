@@ -87,7 +87,7 @@ END:VCARD`;
     themeDataCall();
   }, [companycode, username])
 
-  const { smartWidget } = userData
+  const { smartWidget, facebook, instagram, youtube } = userData
 
   const showingContent = () => {
     return ["phone", "email", "youtube", "facebook", "instagram"].filter((x) => {
@@ -154,7 +154,7 @@ END:VCARD`;
           </>
         )
       case "youtube":
-        return (
+        return (youtube ?
           <>
             <div className="info-item">
               <span role="img" aria-label="youtube">
@@ -184,9 +184,9 @@ END:VCARD`;
             </div>
             {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
           </>
-        )
+          : <></>)
       case "facebook":
-        return (
+        return (facebook ?
           <>
             <div className="info-item">
               <span role="img" aria-label="facebook">
@@ -216,9 +216,9 @@ END:VCARD`;
             </div>
             {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
           </>
-        )
+          : <></>)
       case "instagram":
-        return (
+        return (instagram ?
           <>
             <div className="info-item">
               <span role="img" aria-label="instagram">
@@ -248,7 +248,7 @@ END:VCARD`;
             </div>
             {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
           </>
-        )
+          : <></>)
 
       default:
         break
