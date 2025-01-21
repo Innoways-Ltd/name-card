@@ -254,6 +254,33 @@ END:VCARD`;
         break
     }
   }
+  function getName(userData) {
+    if (userData) {
+      const lengthOfItem = userData['display_name']?.split(" ")
+      if (lengthOfItem?.length > 1) {
+        return `${lengthOfItem[0]?.charAt(0)}${lengthOfItem[1]?.charAt(0)}`.toUpperCase()
+      } else {
+        return userData['display_name']?.charAt(0)
+      }
+    }
+    return 'John Doe'
+  }
+  const renderProfileImage = () => {
+    if (userData && userData?.profile_picture_thumb && userData?.profile_picture_thumb !== "null" && userData?.profile_picture_thumb) {
+      return <img
+        src={userData?.profile_picture_thumb}
+        alt="Profile"
+        className="profile-image"
+      />
+    } else if (userData?.profile_picture && userData.profile_picture !== "null") {
+      return <img
+        src={userData?.profile_picture}
+        alt="Profile"
+        className="profile-image"
+      />
+    }
+    return <div className="profile_placeholder"><span className="make-it-dark">{getName(userData)}</span></div>
+  }
 
   return (
     <React.Fragment>
@@ -264,11 +291,9 @@ END:VCARD`;
       </Helmet>
       <div className="business-card">
         <div className="header">
-          <img
-            src={(userData && userData?.profile_picture_thumb && userData?.profile_picture_thumb !== "null" && userData?.profile_picture_thumb) ? userData.profile_picture_thumb : userData?.profile_picture && userData.profile_picture !== "null" ? userData?.profile_picture : avatarIcon}
-            alt="Profile"
-            className="profile-image"
-          />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            {renderProfileImage()}
+          </div>
           <h2>{userData?.display_name || "User not found"}</h2>
           <p>{userData?.job}</p>
           <p className="description">
