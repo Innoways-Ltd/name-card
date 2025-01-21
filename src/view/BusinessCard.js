@@ -12,6 +12,7 @@ import facebookIcon from "../images/facebook.png"
 import instagramIcon from "../images/instagram.png"
 import youtubeIcon from "../images/youtube.png"
 import { getUserData, getThemeData } from "../apiHandlers/user.apiHandler";
+import defaultGimaIcon from '../images/gimalogo-removebg-preview.png'
 
 const BusinessCard = () => {
   // Extract username from URL parameters
@@ -285,8 +286,22 @@ END:VCARD`;
   return (
     <React.Fragment>
       <Helmet>
-        <link rel="shortcut icon" href={themeData && themeData[0]?.company_icon} />
-        <link rel="icon" href={themeData && themeData[0]?.company_icon} />
+        <link
+          rel="shortcut icon"
+          href={
+            themeData?.[0]?.company_icon
+            || themeData?.[0]?.company_logo
+            || defaultGimaIcon
+          }
+        />
+        <link
+          rel="icon"
+          href={
+            themeData?.[0]?.company_icon
+            || themeData?.[0]?.company_logo
+            || defaultGimaIcon
+          }
+        />
         <title>{userData?.display_name ? `${userData?.display_name} | Business Card` : "User not found"}</title>
       </Helmet>
       <div className="business-card">
