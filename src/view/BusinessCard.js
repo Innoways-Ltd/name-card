@@ -11,7 +11,7 @@ import emailIcon from "../images/email-icon02.png"
 import facebookIcon from "../images/facebook.png"
 import instagramIcon from "../images/instagram.png"
 import youtubeIcon from "../images/youtube.png"
-import { getUserData, getThemeData } from "../apiHandlers/user.apiHandler";
+import { getUserData, getThemeData, getSystemSettings } from "../apiHandlers/user.apiHandler";
 import defaultGimaIcon from '../images/gimalogo-removebg-preview.png'
 
 const BusinessCard = () => {
@@ -84,7 +84,17 @@ END:VCARD`;
         setThemeData(res.Data)
       }
     }
-    getUserDataCall();
+    const getSystemSettingsCall = async () => {
+      const res = await getSystemSettings(companycode);
+      // if gima card is enabled then fetch user data
+      if (res.length && res.find((x) => x.sys_key === "gima_card_fg" && x.sys_value === "1")) {
+        getUserDataCall()
+      }
+    }
+    // 1. fetch system settings
+    // 2. if gima card is enabled then fetch user data
+    // 3. fetch theme data
+    getSystemSettingsCall();
     themeDataCall();
   }, [companycode, username])
 
@@ -279,8 +289,14 @@ END:VCARD`;
         alt="Profile"
         className="profile-image"
       />
+    } else if (userData?.display_name) {
+      return <div className="profile_placeholder"><span className="make-it-dark">{getName(userData)}</span></div>
     }
-    return <div className="profile_placeholder"><span className="make-it-dark">{getName(userData)}</span></div>
+    return <img
+      src={avatarIcon}
+      alt="Profile"
+      className="profile-image"
+    />
   }
 
   return (
