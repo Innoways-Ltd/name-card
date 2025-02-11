@@ -50,15 +50,52 @@ const BusinessCard = () => {
     // Replace with the actual phone number
     window.open(`https://wa.me/${userData.mobile?.replace(/\s+/g, '')?.replace("+", "")}`, '_blank');
   };
+  const getProfileImage = () => {
+    if (userData && userData?.profile_picture_thumb && userData?.profile_picture_thumb !== "null") {
+      return userData?.profile_picture_thumb;
+    } else if (userData?.profile_picture && userData.profile_picture !== "null") {
+      return userData?.profile_picture;
+    }
+    return "";
+  }
 
-  const handleAddToPhoneBook = () => {
+  const encodeImageToBase64 = async (imageUrl) => {
+    const response = await fetch(imageUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch image: ${response.statusText}`);
+    }
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  const handleAddToPhoneBook = async () => {
+    let profileImageBase64 = "";
+    const profileImageUrl = getProfileImage();
+    if (profileImageUrl) {
+      try {
+        profileImageBase64 = await encodeImageToBase64(profileImageUrl);
+      } catch (error) {
+        console.error("Error encoding image to base64:", error);
+      }
+    }
+
     const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:${userData.display_name}
 TITLE:${userData.job}
+TEL;TYPE=HOME:${userData.home_tel}
+TEL;TYPE=WORK:${userData.tel}
 TEL;TYPE=CELL:${userData.mobile}
 EMAIL:${userData.email}
-URL:${userData.youtube}
+URL;TYPE=YouTube:${userData.youtube}
+URL;TYPE=Facebook:${userData.facebook}
+URL;TYPE=Instagram:${userData.instagram}
+${profileImageBase64 ? `PHOTO;ENCODING=b;TYPE=JPEG:${profileImageBase64}` : ""}
 END:VCARD`;
     // download vCard file
     const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
