@@ -88,13 +88,13 @@ const BusinessCard = () => {
 VERSION:3.0
 FN:${userData.display_name}
 TITLE:${userData.job}
-TEL;TYPE=HOME:${userData.home_tel}
-TEL;TYPE=WORK:${userData.tel}
-TEL;TYPE=CELL:${userData.mobile}
-EMAIL:${userData.email}
-URL;TYPE=YouTube:${userData.youtube}
-URL;TYPE=Facebook:${userData.facebook}
-URL;TYPE=Instagram:${userData.instagram}
+${userData.smartWidget?.phone ? `TEL;TYPE=WORK,VOICE:${userData.home_tel}` : ""}
+${userData.smartWidget?.phone ? `TEL;TYPE=WORK,VOICE:${userData.tel}` : ""}
+${userData.smartWidget?.phone ? `TEL;TYPE=WORK,VOICE:${userData.mobile}` : ""}
+${userData.smartWidget?.email ? `EMAIL;TYPE=WORK,INTERNET:${userData.email}` : ""}
+${userData.smartWidget?.youtube ? `URL;TYPE=YouTube:${userData.youtube}` : ""}
+${userData.smartWidget?.facebook ? `URL;TYPE=Facebook:${userData.facebook}` : ""}
+${userData.smartWidget?.instagram ? `URL;TYPE=Instagram:${userData.instagram}` : ""}
 ${profileImageBase64 ? `PHOTO;ENCODING=b;TYPE=JPEG:${profileImageBase64}` : ""}
 END:VCARD`;
     // download vCard file
