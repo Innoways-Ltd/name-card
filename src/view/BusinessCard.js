@@ -73,6 +73,10 @@ const BusinessCard = () => {
     });
   }
 
+  const isValidNumberPresentWithCountryCode = (phoneNumber) => {
+    return phoneNumber && phoneNumber.trim().length > phoneNumber.indexOf(" ") + 1;
+  }
+
   const handleAddToPhoneBook = async () => {
     let profileImageBase64 = "";
     const profileImageUrl = getProfileImage();
@@ -86,15 +90,15 @@ const BusinessCard = () => {
 
     const vcard = `BEGIN:VCARD
 VERSION:3.0
-FN:${userData.display_name}
-TITLE:${userData.job}
-${userData.smartWidget?.phone ? `TEL;TYPE=WORK,VOICE:${userData.home_tel}` : ""}
-${userData.smartWidget?.phone ? `TEL;TYPE=WORK,VOICE:${userData.tel}` : ""}
-${userData.smartWidget?.phone ? `TEL;TYPE=WORK,VOICE:${userData.mobile}` : ""}
-${userData.smartWidget?.email ? `EMAIL;TYPE=WORK,INTERNET:${userData.email}` : ""}
-${userData.smartWidget?.youtube ? `URL;TYPE=YouTube:${userData.youtube}` : ""}
-${userData.smartWidget?.facebook ? `URL;TYPE=Facebook:${userData.facebook}` : ""}
-${userData.smartWidget?.instagram ? `URL;TYPE=Instagram:${userData.instagram}` : ""}
+FN:${userData.display_name || ""}
+TITLE:${userData.job || ""}
+${userData.smartWidget?.phone && isValidNumberPresentWithCountryCode(userData.home_tel) ? `TEL;TYPE=WORK,VOICE:${userData.home_tel}` : ""}
+${userData.smartWidget?.phone && isValidNumberPresentWithCountryCode(userData.tel) ? `TEL;TYPE=WORK,VOICE:${userData.tel}` : ""}
+${userData.smartWidget?.phone && isValidNumberPresentWithCountryCode(userData.mobile) ? `TEL;TYPE=WORK,VOICE:${userData.mobile}` : ""}
+${userData.smartWidget?.email && userData.email ? `EMAIL;TYPE=WORK,INTERNET:${userData.email}` : ""}
+${userData.smartWidget?.youtube && userData.youtube ? `URL;TYPE=YouTube:${userData.youtube}` : ""}
+${userData.smartWidget?.facebook && userData.facebook ? `URL;TYPE=Facebook:${userData.facebook}` : ""}
+${userData.smartWidget?.instagram && userData.instagram ? `URL;TYPE=Instagram:${userData.instagram}` : ""}
 ${profileImageBase64 ? `PHOTO;ENCODING=b;TYPE=JPEG:${profileImageBase64}` : ""}
 END:VCARD`;
     // download vCard file
@@ -146,7 +150,7 @@ END:VCARD`;
   const renderDynamicContents = (type, i) => {
     switch (type) {
       case "phone":
-        return (
+        return isValidNumberPresentWithCountryCode(userData?.home_tel) || isValidNumberPresentWithCountryCode(userData?.tel) || isValidNumberPresentWithCountryCode(userData?.mobile) ? (
           <>
             <div className="info-item">
               <span role="img" aria-label="phone">
@@ -158,19 +162,33 @@ END:VCARD`;
               </span>
               <div className="info-text">
                 <p className="info-label">Mobile</p>
-                <p className="info-value">
-                  <a href={`tel:${userData?.home_tel?.replace(/\s+/g, '')}`}>{userData?.home_tel}</a>
-                </p>
-                <p className="info-value">
-                  <a href={`tel:${userData?.tel?.replace(/\s+/g, '')}`}>{userData?.tel}</a>
-                </p>
-                <p className="info-value">
-                  <a href={`tel:${userData?.mobile?.replace(/\s+/g, '')}`}>{userData?.mobile}</a>
-                </p>
+                {
+                  isValidNumberPresentWithCountryCode(userData?.home_tel) && (
+                    <p className="info-value">
+                      <a href={`tel:${userData?.home_tel?.replace(/\s+/g, '')}`}>{userData?.home_tel}</a>
+                    </p>
+                  )
+                }
+                {
+                  isValidNumberPresentWithCountryCode(userData?.tel) && (
+                    <p className="info-value">
+                      <a href={`tel:${userData?.tel?.replace(/\s+/g, '')}`}>{userData?.tel}</a>
+                    </p>
+                  )
+                }
+                {
+                  isValidNumberPresentWithCountryCode(userData?.mobile) && (
+                    <p className="info-value">
+                      <a href={`tel:${userData?.mobile?.replace(/\s+/g, '')}`}>{userData?.mobile}</a>
+                    </p>
+                  )
+                }
               </div>
             </div>
             {showingContent().length - 1 > i ? (<div className="divider"></div>) : null}
           </>
+        ) : (
+          <></>
         )
       case "email":
         return (
