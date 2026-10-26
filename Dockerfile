@@ -22,7 +22,7 @@ RUN npm run build:${NODE_ENV} --prod
 
 # Step 2: Setup NGINX for serving and proxy configuration
 # FROM FROM nginx:stable-alpine
-FROM harbor-hk.a4appz.com/common/nginx:latest
+FROM harbor-hk.a4appz.com/common/nginx:1.31.8-alpine
 
 # Copy the built application to the NGINX HTML folder
 COPY --from=build /app/build /usr/share/nginx/html
@@ -34,4 +34,3 @@ COPY --from=build /app/build /usr/share/nginx/html
 EXPOSE 80
 
 # Start NGINX server
-CMD ["nginx", "-g", "daemon off;"]
